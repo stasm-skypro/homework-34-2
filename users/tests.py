@@ -5,7 +5,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from materials.models import Course
 from users.models import Subscription
-from django.urls import reverse
 
 User = get_user_model()
 
@@ -22,14 +21,20 @@ class SubscriptionAPIViewTestCase(APITestCase):
         """
 
         # Создаём пользователей
-        self.user = User.objects.create_user(username="user1", email="user1@email", password="password123")
-        self.other_user = User.objects.create_user(username="user2", email="user2@email", password="password123")
+        self.user = User.objects.create_user(
+            username="user1", email="user1@email", password="password123"
+        )
+        self.other_user = User.objects.create_user(
+            username="user2", email="user2@email", password="password123"
+        )
 
         # Создаём тестовый курс
-        self.course = Course.objects.create(name="Test Course", description="Test Description", owner=self.user)
+        self.course = Course.objects.create(
+            name="Test Course", description="Test Description", owner=self.user
+        )
 
         # URL для подписки
-        self.subscription_url = f"/users/subscription/"
+        self.subscription_url = "/users/subscription/"
 
         # Данные для подписки
         self.data = {"course_id": self.course.id}
@@ -42,7 +47,9 @@ class SubscriptionAPIViewTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
         response = self.client.post(self.subscription_url, self.data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertTrue(Subscription.objects.filter(user=self.user, course=self.course).exists())
+        self.assertTrue(
+            Subscription.objects.filter(user=self.user, course=self.course).exists()
+        )
 
     def test_unsubscribe_from_course(self):
         """
@@ -53,7 +60,9 @@ class SubscriptionAPIViewTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
         response = self.client.post(self.subscription_url, self.data, format="json")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertFalse(Subscription.objects.filter(user=self.user, course=self.course).exists())
+        self.assertFalse(
+            Subscription.objects.filter(user=self.user, course=self.course).exists()
+        )
 
     def test_subscribe_unauthenticated(self):
         """
@@ -80,7 +89,9 @@ class SubscriptionAPIViewTestCase(APITestCase):
         Subscription.objects.create(user=self.user, course=self.course)
         self.client.force_authenticate(user=self.user)
         response = self.client.post(self.subscription_url, self.data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)  # Отписка, если подписан
+        self.assertEqual(
+            response.status_code, status.HTTP_204_NO_CONTENT
+        )  # Отписка, если подписан
 
     def test_subscribe_other_user(self):
         """
@@ -90,7 +101,11 @@ class SubscriptionAPIViewTestCase(APITestCase):
         self.client.force_authenticate(user=self.other_user)
         response = self.client.post(self.subscription_url, self.data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertTrue(Subscription.objects.filter(user=self.other_user, course=self.course).exists())
+        self.assertTrue(
+            Subscription.objects.filter(
+                user=self.other_user, course=self.course
+            ).exists()
+        )
 
 
 class UserViewSetTestCase(APITestCase):
@@ -104,7 +119,7 @@ class UserViewSetTestCase(APITestCase):
             email="test@example.com",
             first_name="John",
             last_name="Doe",
-            password="password123"
+            password="password123",
         )
 
         self.admin_user = User.objects.create_superuser(
@@ -112,7 +127,7 @@ class UserViewSetTestCase(APITestCase):
             email="admin@example.com",
             first_name="Donald",
             last_name="Trump",
-            password="adminpass"
+            password="adminpass",
         )
 
         self.client.force_authenticate(user=self.user)
@@ -150,7 +165,11 @@ class UserViewSetTestCase(APITestCase):
         Проверяет регистрацию нового пользователя.
         :param self: Объект класса
         """
-        data = {"username": "newuser", "email": "new@example.com", "password": "newpass123"}
+        data = {
+            "username": "newuser",
+            "email": "new@example.com",
+            "password": "newpass123",
+        }
         response = self.client.post(self.list_url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(User.objects.filter(username="newuser").exists())

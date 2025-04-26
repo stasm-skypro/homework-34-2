@@ -33,7 +33,10 @@ def send_course_update_email(course_id):
 
     # Отправляем уведомление
     subject = "Обновление курса: %s" % course.name
-    message = "Материалы курса «%s» были обновлены.\n\nОписание: %s" % (course.name, course.description)
+    message = "Материалы курса «%s» были обновлены.\n\nОписание: %s" % (
+        course.name,
+        course.description,
+    )
     subscribers = Subscription.objects.filter(course=course).select_related("user")
     for sub in subscribers:
         if sub.user.email:
@@ -42,6 +45,6 @@ def send_course_update_email(course_id):
                 message=message,
                 from_email=EMAIL_HOST_USER,
                 recipient_list=[sub.user.email],
-                fail_silently=True
+                fail_silently=True,
             )
             logger.info("Письмо отправлено пользователю %s" % sub.user)

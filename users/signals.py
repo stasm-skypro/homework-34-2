@@ -10,5 +10,5 @@ PeriodicTask.objects.get_or_create(
     interval=schedule,
     name="Block inactive users",
     task="users.tasks.block_inactive_users",
-    defaults={"kwargs": json.dumps({})}
+    defaults={"kwargs": json.dumps({})},
 )

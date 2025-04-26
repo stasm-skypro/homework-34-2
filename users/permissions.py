@@ -31,7 +31,8 @@ class IsModerator(BasePermission):
         Проверяет, является ли текущий пользователь модератором.
         :param request: Запрос
         :param view:
-        :return: True, если текущий пользователь является модератором и действия create и destroy запрещены, иначе False
+        :return: True, если текущий пользователь является модератором и действия create и destroy запрещены,
+            иначе False
         """
         is_moderator = request.user.groups.filter(name="Модераторы").exists()
         return is_moderator and view.action not in ["create", "destroy"]

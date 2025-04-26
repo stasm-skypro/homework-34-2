@@ -23,16 +23,12 @@ class LessonCreateAPIViewTestCase(APITestCase):
 
         # Создаём тестового владельца
         self.owner = User.objects.create_user(
-            username="owner",
-            email="owner@email.com",
-            password="password"
+            username="owner", email="owner@email.com", password="password"
         )
 
         # Создаём тестовый курс
         self.course = Course.objects.create(
-            name="Test Course",
-            description="Test Course Description",
-            owner=self.owner
+            name="Test Course", description="Test Course Description", owner=self.owner
         )
 
         # Создаём тестовый урок
@@ -40,7 +36,7 @@ class LessonCreateAPIViewTestCase(APITestCase):
             name="Test Lesson",
             description="Test Description",
             course=self.course,
-            owner=self.owner
+            owner=self.owner,
         )
 
         # Создаём тестовые URL-ы
@@ -127,33 +123,30 @@ class CourseViewSetTestCase(APITestCase):
         User.objects.all().delete()  # Удаление всех пользователей перед тестом
 
         self.owner = User.objects.create_user(
-            username="owner",
-            email="owner@example.com",
-            password="testpass"
+            username="owner", email="owner@example.com", password="testpass"
         )
 
         self.moderator = User.objects.create_user(
             username="moderator",
             email="moderator@example.com",
             password="testpass",
-            is_moderator=True
+            is_moderator=True,
         )
 
         # -- Чтобы тесты сработали тестового модератора обязательно нужно добавить в группу модераторов
         from django.contrib.auth.models import Group
-        moderators_group, created = Group.objects.get_or_create(name="Модераторы")  # Получаем группу модераторов
+
+        moderators_group, created = Group.objects.get_or_create(
+            name="Модераторы"
+        )  # Получаем группу модераторов
         moderators_group.user_set.add(self.moderator)  # Добавляем модератора в группу
 
         self.user = User.objects.create_user(
-            username="user",
-            email="user@example.com",
-            password="testpass"
+            username="user", email="user@example.com", password="testpass"
         )
 
         self.course = Course.objects.create(
-            name="Test Course",
-            description="Test Description",
-            owner=self.owner
+            name="Test Course", description="Test Description", owner=self.owner
         )
 
         self.list_url = "/course/"

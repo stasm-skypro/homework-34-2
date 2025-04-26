@@ -8,7 +8,11 @@ class CourseAdmin(admin.ModelAdmin):
     """
     Отображает поля модели Курсы в админке.
     """
-    list_display = ("name", "description",)
+
+    list_display = (
+        "name",
+        "description",
+    )
     list_filter = ("name",)
     ordering = ("name",)
 
@@ -18,6 +22,11 @@ class LessonAdmin(admin.ModelAdmin):
     """
     Отображает поля модели Уроки в админке.
     """
-    list_display = ("name", "description", "course",)
+
+    list_display = (
+        "name",
+        "description",
+        "course",
+    )
     list_filter = ("name", "course")
     ordering = ("name",)
