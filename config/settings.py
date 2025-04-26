@@ -32,11 +32,11 @@ INSTALLED_APPS = [
 ]
 # Third-party apps
 INSTALLED_APPS += [
-    "rest_framework",  # Django REST Framework
-    "rest_framework_simplejwt",  # Django REST Framework Simple JWT
-    "drf_yasg",  # Django REST Framework Swagger
-    "corsheaders",  # Django CORS Headers
-    "django_celery_beat",  # Django Celery Beat
+    "rest_framework",               # Django REST Framework
+    "rest_framework_simplejwt",     # Django REST Framework Simple JWT
+    "drf_yasg",                     # Django REST Framework Swagger
+    "corsheaders",                  # Django CORS Headers
+    "django_celery_beat",           # Django Celery Beat
 ]
 # Local apps
 INSTALLED_APPS += ["users", "materials"]  # User models  # Material models
