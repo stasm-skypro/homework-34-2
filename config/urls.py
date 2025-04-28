@@ -25,10 +25,13 @@ schema_view = get_schema_view(
 urlpatterns = [
     # -- URL for admin --
     path("admin/", admin.site.urls),
+
     # -- URL for Course & Lesson models --
     path("", include("materials.urls", namespace="materials")),
+
     # -- URL for User models --
     path("users/", include("users.urls", namespace="users")),
+
     # -- URL for API documentation --
     path("swagger/", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),  # swagger
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),  # redoc

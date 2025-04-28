@@ -34,17 +34,12 @@
 
 ### -- web - сервис веб-сервера (django).
 
-Образ создаётся с помощью Dockerfile. Фикстуры для заполнения БД находятся внутри проекта в директориях "materials/fixtures" и "users/fixtures".
+Образ создаётся с помощью Dockerfile. Фикстура для заполнения БД находятся в корне проекта в файле "all_data.json".
 
 Применение фикстур:
 
 ```bash
-docker-compose exec web python manage.py loaddata \ 
-/materials/fixtures/course_fixture.json \ 
-/materials/fixtures/lesson_fixture.json \ 
-/users/fixtures/payment_fixture.json \ 
-/users/fixtures/subscription_fixture.json \ 
-/users/fixtures/user_fixture.json
+docker-compose exec web python manage.py loaddata /app/all_data.json
 ```
 
 ### -- celery - сервис Celery, используется для запуска периодических задач.
@@ -62,6 +57,22 @@ docker compose up --build
 
 ![containers](./media/readme_pic/containers.png)
 
+
+## 3. Проверка работоспособности сервисов
+
+Для каждого сервиса прописан healthcheck.
+
+-- test: Команда, которая будет выполняться для проверки состояния контейнера. Используются стандартные утилиты (pg_isready, redis-cli ping, curl).
+
+-- interval: Интервал между проверками. Указывается в секундах.
+
+-- retries: Количество неудачных попыток перед тем, как контейнер будет считаться непригодным.
+
+-- start_period: Время ожидания перед началом проверок после запуска контейнера.
+
+-- timeout: Максимальное время, которое дается на выполнение команды проверки.
+
+Docker будет проверять каждый сервис с заданным интервалом и выполнять проверки на основе указанных команд. Если сервис не отвечает, он будет помечен как "неработающий".
 
 ## 3. Описание решений
 
