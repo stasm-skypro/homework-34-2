@@ -19,7 +19,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", False) == "True"
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(" ")
 
 # Application definition
 INSTALLED_APPS = [
@@ -32,14 +32,14 @@ INSTALLED_APPS = [
 ]
 # Third-party apps
 INSTALLED_APPS += [
-    "rest_framework",  # Django REST Framework
-    "rest_framework_simplejwt",  # Django REST Framework Simple JWT
-    "drf_yasg",  # Django REST Framework Swagger
-    "corsheaders",  # Django CORS Headers
-    "django_celery_beat",  # Django Celery Beat
+    "rest_framework",
+    "rest_framework_simplejwt",
+    "drf_yasg",
+    "corsheaders",
+    "django_celery_beat",
 ]
 # Local apps
-INSTALLED_APPS += ["users", "materials"]  # User models  # Material models
+INSTALLED_APPS += ["users", "materials"]  # User model  # Material model
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -102,17 +102,18 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, STATIC_URL)
+
+# Media files
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
+FILE_UPLOAD_MAX_MEMORY_SIZE = 2 * 1024 * 1024  # max 2 MB
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Custom user model
 AUTH_USER_MODEL = "users.User"
-
-# Media files
-MEDIA_ROOT = BASE_DIR / "media"
-MEDIA_URL = "/media/"
-FILE_UPLOAD_MAX_MEMORY_SIZE = 2 * 1024 * 1024  # max 2 MB
 
 # Настройка аутентификации (необходимо для того, чтобы пользователь после успешной регистрации автоматически
 # входил в систему)

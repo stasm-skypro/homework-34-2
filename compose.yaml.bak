@@ -6,9 +6,8 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_HOST=${DB_HOST}
-    #    env_file:
-    #      - ./.env
+#    env_file:
+#      - ./.env
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
@@ -38,13 +37,13 @@ services:
     image: school
     container_name: school
     restart: always
-    # command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
-    command: /entrypoint_web.sh
+    command: "python manage.py runserver 0.0.0.0:8000"
     env_file:
       - ./.env
+    links:
+      - "postgres:dbps"
     networks:
       - dbnet
-    working_dir: /app # Указание рабочей директории
     volumes:
       - .:/app
       - static_volume:/app/static
@@ -56,17 +55,10 @@ services:
 
   celery:
     build: .
-    image: selery
-    container_name: selery
-    # command: bash -c "python manage.py migrate && celery -A config worker --loglevel=info"
-    command: /entrypoint_selery.sh
-    working_dir: /app # Указание рабочей директории
-    env_file:
-      - ./.env
-    networks:
-      - dbnet
+    command: bash -c "python manage.py migrate && celery -A config worker --loglevel=info"
+    working_dir: /app  # Указание рабочей директории
     volumes:
-      - .:/app # Монтируем всю текущую директорию в контейнер, потому что "selery" требует директорию "config".
+      - .:/app  # Монтируем всю текущую директорию в контейнер, потому что "selery" требует директорию "config".
     depends_on:
       - postgres
       - redis
