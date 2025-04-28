@@ -13,6 +13,12 @@ services:
       - dbnet
     ports:
       - "5432:5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "${DB_USER}", "-d", "${DB_NAME}" ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
 
   adminer:
     image: adminer
@@ -23,14 +29,14 @@ services:
       - "postgres:db"
     networks:
       - dbnet
+    depends_on:
+      - postgres
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "${DB_USER}", "-d", "${DB_NAME}" ]
       interval: 10s
       retries: 5
       start_period: 30s
       timeout: 5s
-    depends_on:
-      - postgres
 
   redis:
     image: redis
@@ -38,6 +44,12 @@ services:
       - "6379:6379"
     networks:
       - dbnet
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
 
   web:
     build: .
@@ -59,6 +71,12 @@ services:
     depends_on:
       - postgres
       - redis
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000" ]
+      interval: 10s
+      retries: 3
+      start_period: 30s
+      timeout: 5s
 
   celery:
     build: .
@@ -76,6 +94,12 @@ services:
     depends_on:
       - postgres
       - redis
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/healthcheck" ]  # Замените на подходящий эндпоинт проверки
+      interval: 10s
+      retries: 3
+      start_period: 30s
+      timeout: 5s
 
 networks:
   dbnet:
