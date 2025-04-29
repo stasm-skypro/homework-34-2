@@ -52,7 +52,9 @@ class UserViewSet(viewsets.ModelViewSet):
                 return UserDetailSerializer  # Полный доступ для владельца
         elif self.action == "create":
             return RegisterSerializer
-        return UserSerializer  # Ограниченный доступ для чужого профиля и списка профилей
+        return (
+            UserSerializer  # Ограниченный доступ для чужого профиля и списка профилей
+        )
 
     def get_permissions(self):
         """
@@ -82,7 +84,8 @@ class UserViewSet(viewsets.ModelViewSet):
         self.permission_classes = [AllowAny]
         response = super().create(request, *args, **kwargs)
         logger.info(
-            "Пользователь с именем %s и email %s успешно создан." % (request.data["username"], request.data["email"])
+            "Пользователь с именем %s и email %s успешно создан."
+            % (request.data["username"], request.data["email"])
         )
         return response
 
@@ -109,7 +112,9 @@ class UserViewSet(viewsets.ModelViewSet):
         """
         self.permission_classes = [IsAuthenticated]
         response = super().retrieve(request, *args, **kwargs)
-        logger.info("Информация о пользователе с id %s успешно получена." % kwargs["pk"])
+        logger.info(
+            "Информация о пользователе с id %s успешно получена." % kwargs["pk"]
+        )
         return response
 
     def update(self, request, *args, **kwargs):
@@ -122,7 +127,9 @@ class UserViewSet(viewsets.ModelViewSet):
         """
         self.permission_classes = [IsAuthenticated]
         response = super().update(request, *args, **kwargs)
-        logger.info("Информация о пользователе с id %s успешно обновлена." % kwargs["pk"])
+        logger.info(
+            "Информация о пользователе с id %s успешно обновлена." % kwargs["pk"]
+        )
         return response
 
     def destroy(self, request, *args, **kwargs):
@@ -197,14 +204,19 @@ class PaymentViewSet(viewsets.ModelViewSet):
         payment = self.get_object()
 
         if not payment.session_id:
-            return Response({"error": "Нет session_id для проверки оплаты."}, status=drf_status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "Нет session_id для проверки оплаты."},
+                status=drf_status.HTTP_400_BAD_REQUEST,
+            )
 
         url = f"https://api.stripe.com/v1/checkout/sessions/{payment.session_id}"
         headers = {"Authorization": f"Bearer {settings.STRIPE_SECRET_KEY}"}
         response = requests.get(url, headers=headers)
 
         if response.status_code != 200:
-            return Response({"error": "Ошибка запроса к Stripe."}, status=response.status_code)
+            return Response(
+                {"error": "Ошибка запроса к Stripe."}, status=response.status_code
+            )
 
         session_data = response.json()
         stripe_status = session_data.get("payment_status")
@@ -249,12 +261,16 @@ class SubscriptionAPIView(APIView):
         if subs_item.exists():
             subs_item.delete()
             message = "Подписка удалена"
-            logger.info("Подписка на курс %s удалена пользователем %s", course_item, user)
+            logger.info(
+                "Подписка на курс %s удалена пользователем %s", course_item, user
+            )
             answer = status.HTTP_204_NO_CONTENT
         else:
             Subscription.objects.create(user=user, course=course_item)
             message = "Подписка добавлена"
-            logger.info("Подписка на курс %s добавлена пользователем %s", course_item, user)
+            logger.info(
+                "Подписка на курс %s добавлена пользователем %s", course_item, user
+            )
             answer = status.HTTP_201_CREATED
 
         return Response({"message": message}, status=answer)

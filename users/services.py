@@ -30,7 +30,11 @@ def convert_rub_to_usd(amount_rub):
         return None  # Если курс конвертации не найден
 
     rate = get_rub_to_usd_rate()
-    return round(float(amount_rub) / rate, 2) if rate else "Ошибка получения курса конвертации"
+    return (
+        round(float(amount_rub) / rate, 2)
+        if rate
+        else "Ошибка получения курса конвертации"
+    )
 
 
 def create_price(amount):
@@ -46,7 +50,7 @@ def create_price(amount):
             currency="usd",
             unit_amount=int(amount * 100),
             recurring={"interval": "month"},
-            product_data={"name": "Gold Plan"}
+            product_data={"name": "Gold Plan"},
         )
     except stripe.error.StripeError as e:
         print(e)
@@ -60,10 +64,12 @@ def create_checkout_session(price_id):
     :return: Объект сессии stripe
     """
     session = stripe.checkout.Session.create(
-        line_items=[{
-            "price": price_id,
-            "quantity": 1,
-        }],
+        line_items=[
+            {
+                "price": price_id,
+                "quantity": 1,
+            }
+        ],
         mode="subscription",
         success_url="http://localhost:8000/",
         cancel_url="http://localhost:8000/",

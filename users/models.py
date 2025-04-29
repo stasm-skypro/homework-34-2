@@ -158,20 +158,17 @@ class Payment(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name="Пользователь",
-        related_name="payments"
+        related_name="payments",
     )
 
-    date = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name="Дата оплаты"
-    )
+    date = models.DateTimeField(auto_now_add=True, verbose_name="Дата оплаты")
 
     course = models.ForeignKey(
         Course,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        verbose_name="Оплаченный курс"
+        verbose_name="Оплаченный курс",
     )
 
     lesson = models.ForeignKey(
@@ -211,7 +208,9 @@ class Payment(models.Model):
         help_text="Ссылка на оплату",
     )
 
-    status = models.CharField(max_length=10, choices=StatusChoices.choices, default=StatusChoices.PENDING)
+    status = models.CharField(
+        max_length=10, choices=StatusChoices.choices, default=StatusChoices.PENDING
+    )
 
     class Meta:
         """
@@ -237,7 +236,7 @@ class Subscription(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name="Пользователь",
-        related_name="subscriptions"
+        related_name="subscriptions",
     )
 
     course = models.ForeignKey(

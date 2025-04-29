@@ -11,6 +11,7 @@ class PaymentSerializer(serializers.ModelSerializer):
         """
         Определяет поля модели в админке.
         """
+
         model = Payment
         fields = "__all__"
 
@@ -26,13 +27,9 @@ class UserSerializer(serializers.ModelSerializer):
         """
         Определяет поля модели в админке.
         """
+
         model = User
-        fields = [
-            "id",
-            "username",
-            "email",
-            "amount"
-        ]
+        fields = ["id", "username", "email"]
 
 
 class UserDetailSerializer(serializers.ModelSerializer):
@@ -46,6 +43,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
         """
         Определяет поля модели в админке.
         """
+
         model = User
         fields = [
             "id",
@@ -74,6 +72,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         """
         Определяет поля модели в админке.
         """
+
         model = User
         fields = ["id", "username", "email", "password", "first_name", "last_name"]
 

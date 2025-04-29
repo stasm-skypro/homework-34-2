@@ -19,7 +19,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", False) == "True"
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS: list[str] = os.getenv("DJANGO_ALLOWED_HOSTS").split(" ")
 
 # Application definition
 INSTALLED_APPS = [
@@ -32,17 +32,14 @@ INSTALLED_APPS = [
 ]
 # Third-party apps
 INSTALLED_APPS += [
-    "rest_framework",  # Django REST Framework
-    "rest_framework_simplejwt",  # Django REST Framework Simple JWT
-    "drf_yasg",  # Django REST Framework Swagger
-    "corsheaders",  # Django CORS Headers
-    "django_celery_beat",  # Django Celery Beat
+    "rest_framework",
+    "rest_framework_simplejwt",
+    "drf_yasg",
+    "corsheaders",
+    "django_celery_beat",
 ]
 # Local apps
-INSTALLED_APPS += [
-    "users",  # User models
-    "materials"  # Material models
-]
+INSTALLED_APPS += ["users", "materials"]  # User model  # Material model
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -105,17 +102,18 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, STATIC_URL)
+
+# Media files
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
+FILE_UPLOAD_MAX_MEMORY_SIZE = 2 * 1024 * 1024  # max 2 MB
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Custom user model
 AUTH_USER_MODEL = "users.User"
-
-# Media files
-MEDIA_ROOT = BASE_DIR / "media"
-MEDIA_URL = "/media/"
-FILE_UPLOAD_MAX_MEMORY_SIZE = 2 * 1024 * 1024  # max 2 MB
 
 # Настройка аутентификации (необходимо для того, чтобы пользователь после успешной регистрации автоматически
 # входил в систему)
@@ -167,23 +165,27 @@ LOGGING = {
 
 # Настройка DjangoFilterBackend
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': [  # Настройка фильтрации данных
-        'django_filters.rest_framework.DjangoFilterBackend',
-        'rest_framework.filters.SearchFilter',
-        'rest_framework.filters.OrderingFilter',
+    "DEFAULT_FILTER_BACKENDS": [  # Настройка фильтрации данных
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [  # Настройка аутентификации
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
-    'DEFAULT_PERMISSION_CLASSES': (  # Настройка прав доступа для всех контроллеров
-        'rest_framework.permissions.IsAuthenticated',
+    "DEFAULT_PERMISSION_CLASSES": (  # Настройка прав доступа для всех контроллеров
+        "rest_framework.permissions.IsAuthenticated",
     ),
 }
 
 # Настройка Simple JWT
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),  # Настройка времени жизни токена доступа
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),  # Настройка времени жизни токена обновления
+    "ACCESS_TOKEN_LIFETIME": timedelta(
+        minutes=30
+    ),  # Настройка времени жизни токена доступа
+    "REFRESH_TOKEN_LIFETIME": timedelta(
+        days=1
+    ),  # Настройка времени жизни токена обновления
     "AUTH_HEADER_TYPES": ("Bearer",),  # Настройка типа заголовка для токена
 }
 
@@ -197,7 +199,9 @@ CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
 
 # Настройка Celery
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")  # URL-адрес брокера сообщений
-CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")  # URL-адрес брокера результатов, также Redis
+CELERY_RESULT_BACKEND = os.getenv(
+    "CELERY_RESULT_BACKEND"
+)  # URL-адрес брокера результатов, также Redis
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60

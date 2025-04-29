@@ -9,6 +9,7 @@ class Command(BaseCommand):
     Кастомная команда. Создаёт группу 'Модераторы' и наделяёт её правами просматривать и редактировать курсы
     и уроки.
     """
+
     help = "Создает группу 'Модераторы' с правами на редактирование и просмотр уроков и курсов"
 
     def handle(self, *args, **kwargs):
@@ -17,15 +18,17 @@ class Command(BaseCommand):
         # Получаем разрешения
         lesson_perms = Permission.objects.filter(
             content_type=ContentType.objects.get_for_model(Lesson),
-            codename__in=["change_lesson", "view_lesson"]
+            codename__in=["change_lesson", "view_lesson"],
         )
         course_perms = Permission.objects.filter(
             content_type=ContentType.objects.get_for_model(Course),
-            codename__in=["change_course", "view_course"]
+            codename__in=["change_course", "view_course"],
         )
 
         # Назначаем права группе
         group.permissions.set(list(lesson_perms) + list(course_perms))
         group.save()
 
-        self.stdout.write(self.style.SUCCESS('Группа "Модераторы" создана и права назначены'))
+        self.stdout.write(
+            self.style.SUCCESS('Группа "Модераторы" создана и права назначены')
+        )
