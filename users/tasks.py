@@ -5,7 +5,7 @@ from django.utils import timezone
 
 
 @shared_task
-def block_user(user_id):
+def block_inactive_users(user_id):
     """
     Блокирует всех пользователей, которые не входили в аккаунт более месяца.
     :param user_id: id пользователя
