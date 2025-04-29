@@ -22,9 +22,7 @@ class LessonCreateAPIViewTestCase(APITestCase):
         User.objects.all().delete()  # Удаление всех пользователей перед тестом
 
         # Создаём тестового владельца
-        self.owner = User.objects.create_user(
-            username="owner", email="owner@email.com", password="password"
-        )
+        self.owner = User.objects.create_user(username="owner", email="owner@email.com", password="password")
 
         # Создаём тестовый курс
         self.course = Course.objects.create(
@@ -122,9 +120,7 @@ class CourseViewSetTestCase(APITestCase):
         """
         User.objects.all().delete()  # Удаление всех пользователей перед тестом
 
-        self.owner = User.objects.create_user(
-            username="owner", email="owner@example.com", password="testpass"
-        )
+        self.owner = User.objects.create_user(username="owner", email="owner@example.com", password="testpass")
 
         self.moderator = User.objects.create_user(
             username="moderator",
@@ -136,18 +132,12 @@ class CourseViewSetTestCase(APITestCase):
         # -- Чтобы тесты сработали тестового модератора обязательно нужно добавить в группу модераторов
         from django.contrib.auth.models import Group
 
-        moderators_group, created = Group.objects.get_or_create(
-            name="Модераторы"
-        )  # Получаем группу модераторов
+        moderators_group, created = Group.objects.get_or_create(name="Модераторы")  # Получаем группу модераторов
         moderators_group.user_set.add(self.moderator)  # Добавляем модератора в группу
 
-        self.user = User.objects.create_user(
-            username="user", email="user@example.com", password="testpass"
-        )
+        self.user = User.objects.create_user(username="user", email="user@example.com", password="testpass")
 
-        self.course = Course.objects.create(
-            name="Test Course", description="Test Description", owner=self.owner
-        )
+        self.course = Course.objects.create(name="Test Course", description="Test Description", owner=self.owner)
 
         self.list_url = "/course/"
         self.course_url = f"/course/{self.course.id}/"

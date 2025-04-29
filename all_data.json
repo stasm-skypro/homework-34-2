@@ -80,7 +80,7 @@
   "pk": 2,
   "fields": {
     "name": "Block inactive users",
-    "task": "users.tasks.block_inactive_users",
+    "task": "users.tasks.block_user",
     "interval": 1,
     "crontab": null,
     "solar": null,

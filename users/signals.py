@@ -36,6 +36,7 @@ from django.dispatch import receiver
 from django_celery_beat.models import PeriodicTask, IntervalSchedule
 import json
 
+
 @receiver(post_migrate)
 def create_block_inactive_users_task(sender, **kwargs):
     schedule, created = IntervalSchedule.objects.get_or_create(
@@ -44,8 +45,10 @@ def create_block_inactive_users_task(sender, **kwargs):
     )
 
     PeriodicTask.objects.get_or_create(
-        interval=schedule,
-        name="Block inactive users",
-        task="users.tasks.block_user",
-        defaults={"kwargs": json.dumps({})},
+        name="Block inactive users",  # ищем по имени!
+        defaults={
+            "interval": schedule,
+            "task": "users.tasks.block_user",
+            "kwargs": json.dumps({}),
+        },
     )

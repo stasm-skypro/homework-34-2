@@ -29,6 +29,4 @@ class Command(BaseCommand):
         group.permissions.set(list(lesson_perms) + list(course_perms))
         group.save()
 
-        self.stdout.write(
-            self.style.SUCCESS('Группа "Модераторы" создана и права назначены')
-        )
+        self.stdout.write(self.style.SUCCESS('Группа "Модераторы" создана и права назначены'))

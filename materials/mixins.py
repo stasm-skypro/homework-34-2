@@ -24,8 +24,6 @@ class LessonPermissionMixin:
                 IsOwner | IsModerator,
             ]  # Владелец и модератор могут редактировать
         else:  # Для "GET"
-            self.permission_classes = [
-                IsAuthenticated
-            ]  # Любой авторизованный пользователь может просматривать
+            self.permission_classes = [IsAuthenticated]  # Любой авторизованный пользователь может просматривать
 
         return [permission() for permission in self.permission_classes]

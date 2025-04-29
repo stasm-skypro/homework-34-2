@@ -30,11 +30,7 @@ def convert_rub_to_usd(amount_rub):
         return None  # Если курс конвертации не найден
 
     rate = get_rub_to_usd_rate()
-    return (
-        round(float(amount_rub) / rate, 2)
-        if rate
-        else "Ошибка получения курса конвертации"
-    )
+    return round(float(amount_rub) / rate, 2) if rate else "Ошибка получения курса конвертации"
 
 
 def create_price(amount):

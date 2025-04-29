@@ -208,9 +208,7 @@ class Payment(models.Model):
         help_text="Ссылка на оплату",
     )
 
-    status = models.CharField(
-        max_length=10, choices=StatusChoices.choices, default=StatusChoices.PENDING
-    )
+    status = models.CharField(max_length=10, choices=StatusChoices.choices, default=StatusChoices.PENDING)
 
     class Meta:
         """

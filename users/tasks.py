@@ -12,9 +12,7 @@ def block_user(user_id):
     :return: None
     """
     month_ago = timezone.now() - timedelta(days=30)
-    users_to_block = User.objects.filter(
-        is_active=True, last_login__lt=month_ago
-    )  # Выбираем тех пользователей,
+    users_to_block = User.objects.filter(is_active=True, last_login__lt=month_ago)  # Выбираем тех пользователей,
     # которые не входили в аккаунт более месяца
 
     for user in users_to_block:
