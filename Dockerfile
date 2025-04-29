@@ -24,9 +24,11 @@ COPY . .
 
 # Копируем скрипт и даём права
 COPY entrypoint_web.sh /entrypoint_web.sh
-COPY entrypoint_selery.sh /entrypoint_selery.sh
+COPY entrypoint_celery.sh /entrypoint_celery.sh
+COPY entrypoint_celery-beat.sh /entrypoint_celery-beat.sh
 RUN chmod +x /entrypoint_web.sh
-RUN chmod +x /entrypoint_selery.sh
+RUN chmod +x /entrypoint_celery.sh
+RUN chmod +x /entrypoint_celery-beat.sh
 
 # Меняем пользователя на userdj
 USER userdj
