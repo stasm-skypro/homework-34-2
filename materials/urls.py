@@ -22,13 +22,7 @@ urlpatterns = [
     # URL-ы для Lesson APIView
     path("lesson/create/", LessonCreateAPIView.as_view(), name="lesson-create"),
     path("lesson/list/", LessonListAPIView.as_view(), name="lesson-list"),
-    path(
-        "lesson/list/<int:pk>/", LessonRetrieveAPIView.as_view(), name="lesson-detail"
-    ),
-    path(
-        "lesson/update/<int:pk>/", LessonUpdateAPIView.as_view(), name="lesson-update"
-    ),
-    path(
-        "lesson/delete/<int:pk>/", LessonDestroyAPIView.as_view(), name="lesson-delete"
-    ),
+    path("lesson/list/<int:pk>/", LessonRetrieveAPIView.as_view(), name="lesson-detail"),
+    path("lesson/update/<int:pk>/", LessonUpdateAPIView.as_view(), name="lesson-update"),
+    path("lesson/delete/<int:pk>/", LessonDestroyAPIView.as_view(), name="lesson-delete"),
 ] + router.urls

@@ -180,12 +180,8 @@ REST_FRAMEWORK = {
 
 # Настройка Simple JWT
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(
-        minutes=30
-    ),  # Настройка времени жизни токена доступа
-    "REFRESH_TOKEN_LIFETIME": timedelta(
-        days=1
-    ),  # Настройка времени жизни токена обновления
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),  # Настройка времени жизни токена доступа
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),  # Настройка времени жизни токена обновления
     "AUTH_HEADER_TYPES": ("Bearer",),  # Настройка типа заголовка для токена
 }
 
@@ -199,9 +195,7 @@ CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
 
 # Настройка Celery
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")  # URL-адрес брокера сообщений
-CELERY_RESULT_BACKEND = os.getenv(
-    "CELERY_RESULT_BACKEND"
-)  # URL-адрес брокера результатов, также Redis
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")  # URL-адрес брокера результатов, также Redis
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60

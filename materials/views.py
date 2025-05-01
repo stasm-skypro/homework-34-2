@@ -114,13 +114,9 @@ class CourseViewSet(viewsets.ModelViewSet):
         :return: Ответ
         """
         response = super().update(request, *args, **kwargs)
-        logger.info(
-            "Курс %s обновлён пользователем %s", response.data.get("name"), request.user
-        )
+        logger.info("Курс %s обновлён пользователем %s", response.data.get("name"), request.user)
         course_id = self.get_object().id
-        send_course_update_email.delay(
-            course_id
-        )  # Отправляем уведомление об обновлении курса
+        send_course_update_email.delay(course_id)  # Отправляем уведомление об обновлении курса
         return response
 
     def destroy(self, request, *args, **kwargs):
@@ -240,9 +236,7 @@ class LessonUpdateAPIView(LessonPermissionMixin, generics.UpdateAPIView):
         :return: Ответ
         """
         response = super().update(request, *args, **kwargs)
-        logger.info(
-            "Урок %s обновлён пользователем %s", response.data.get("name"), request.user
-        )
+        logger.info("Урок %s обновлён пользователем %s", response.data.get("name"), request.user)
         return response
 
 

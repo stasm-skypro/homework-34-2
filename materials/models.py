@@ -13,9 +13,7 @@ class Course(models.Model):
 
     name = models.CharField(max_length=255, verbose_name="Название курса")
     description = models.TextField(verbose_name="Описание курса")
-    image = models.ImageField(
-        upload_to="courses/", blank=True, null=True, verbose_name="Превью курса"
-    )
+    image = models.ImageField(upload_to="courses/", blank=True, null=True, verbose_name="Превью курса")
     owner = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,
@@ -23,9 +21,7 @@ class Course(models.Model):
         null=True,
         verbose_name="Владелец курса",
     )
-    updated_at = models.DateTimeField(
-        auto_now=True, verbose_name="Последнее обновление"
-    )
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Последнее обновление")
 
     def __str__(self):
         """
@@ -55,15 +51,9 @@ class Lesson(models.Model):
 
     name = models.CharField(max_length=255, verbose_name="Название урока")
     description = models.TextField(verbose_name="Описание урока")
-    course = models.ForeignKey(
-        Course, on_delete=models.CASCADE, related_name="lessons", verbose_name="Курс"
-    )
-    image = models.ImageField(
-        upload_to="lessons/", blank=True, null=True, verbose_name="Превью урока"
-    )
-    video = models.FileField(
-        upload_to="lessons/", blank=True, null=True, verbose_name="Видео урока"
-    )
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="lessons", verbose_name="Курс")
+    image = models.ImageField(upload_to="lessons/", blank=True, null=True, verbose_name="Превью урока")
+    video = models.FileField(upload_to="lessons/", blank=True, null=True, verbose_name="Видео урока")
     owner = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,

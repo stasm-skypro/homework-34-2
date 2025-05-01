@@ -20,13 +20,9 @@ class DescriptionValidator:
         :param value: Словарь с полями модели
         :return: None
         """
-        pattern = re.compile(
-            r"(?:https?://)?(?:www\.)?(youtube\.com|youtu\.be)"
-        )  # Проверяет также сокращённые ссылки
+        pattern = re.compile(r"(?:https?://)?(?:www\.)?(youtube\.com|youtu\.be)")  # Проверяет также сокращённые ссылки
 
         field_to_validate = str(dict(value).get(self.field))
         if "https://" in field_to_validate or "http://" in field_to_validate:
             if not pattern.match(field_to_validate):
-                raise serializers.ValidationError(
-                    "Ссылка на другие каналы кроме youtube не допустима."
-                )
+                raise serializers.ValidationError("Ссылка на другие каналы кроме youtube не допустима.")
